@@ -30,17 +30,22 @@ public class CajeroAutomatico {
 
         // retiro mínimo de 10.000 y máximo de 1.000.000
         if (monto < 10000 || monto > 1000000) {
-            return "Error: El retiro mínimo es de 10.000 y el máximo de 1.000.000.";
+            return "El retiro mínimo es de 10.000 y el máximo de 1.000.000."
+                    + " "
+                    +"Digite de nuevo un monto.";
+            
         }
 
         // la cantidad de dinero a retirar se debe dar en múltiplos de 10
         if (monto % 10 != 0) {
-            return "Error: La cantidad debe ser un múltiplo de 10(10.000; 20.000; 50.000; 100.000).";
+            return "La cantidad debe ser un múltiplo de 10(10.000; 20.000; 50.000; 100.000)."+ " "
+                    +"Digite de nuevo un monto.";
         }
 
         // cajero tenga saldo suficiente
         if (monto > calcularSaldoTotal()) {
-            return "Error El cajero no tiene saldo suficiente.";
+            return "El cajero no tiene saldo suficiente."+ " "
+                    +"Digite de nuevo un monto.";
         }
 
         // cantidad de billetes
@@ -79,6 +84,56 @@ public class CajeroAutomatico {
             }
 
         }
-        return "¡Retiro exitoso!";
+        //Entregar restante en la menor cantidad de billetes
+        if (restante >= 100000) {
+            while (restante >= 100000 && cant100 > 0) {
+            restante = restante - 100000; // Le restamos al total que falta
+            cant100 = cant100 - 1;       // Quitamos un billete del cajero
+            n100 = n100 + 1;             // Sumamos uno a los billetes que vamos a entregar
+        }
+        }
+        if (restante >= 50000) {
+            while (restante >= 50000 && cant50 > 0) {
+            restante = restante - 50000;
+            cant50 = cant50 - 1;
+            n50 = n50 + 1;
+        }
+        }
+        if (restante >= 20000) {
+            while (restante >= 20000 && cant20 > 0) {
+            restante = restante - 20000;
+            cant20 = cant20 - 1;
+            n20 = n20 + 1;
+        }
+        }
+        if (restante >= 10000) {
+            while (restante >= 10000 && cant10 > 0) {
+            restante = restante - 10000;
+            cant10 = cant10 - 1;
+            n10 = n10 + 1;
+        }
+        }
+
+        // Validación por si no hubo una combinación exacta
+        if (restante > 0) {
+            return "No hay billetes para este monto"+ " "
+                    +"Digite de nuevo un monto.";
+        }
+
+        // Actualizar el HashMap con .put() con las nuevas cantidades
+        billetes.put(100000, cant100);
+        billetes.put(50000, cant50);
+        billetes.put(20000, cant20);
+        billetes.put(10000, cant10);
+
+        // mostrar la distribución de billetes
+        return "¡Retiro satisfactorio! \nBilletes entregados:\n" +
+               (n100 > 0 ? "- 100.000: " + n100 + "\n" : "") +
+               (n50 > 0  ? "- 50.000: " + n50 + "\n" : "") +
+               (n20 > 0  ? "- 20.000: " + n20 + "\n" : "") +
+               (n10 > 0  ? "- 10.000: " + n10 + "\n" : "") +
+                "Limpie la pantalla para realizar un nuevo retiro.";
     }
-}
+
+ 
+        }
